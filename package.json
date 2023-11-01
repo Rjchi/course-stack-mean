@@ -4,6 +4,7 @@
   "description": "Aplicación utilizando el stack MEAN()\u001b[Des una aplicación para reforzar conocimientos)",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "dev": "nodemon index.js"
   },
   "keywords": [
