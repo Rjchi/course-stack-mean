@@ -10,9 +10,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-/**---------
- * | Routes
- * ---------*/
+/**--------------------------------------------------------
+ * | Routes (en este caso traemos el routes/index.js)
+ * --------------------------------------------------------*/
 app.use("/api", require("./routes"));
 
 app.listen(PORT, () => console.log(`Server on port: ${PORT}`));
