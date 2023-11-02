@@ -1,16 +1,24 @@
 const { storageModel } = require("../models");
 
+const handleErrors = require("../utils/handleError");
+
 const getItems = async (req, res) => {
   try {
     const data = await storageModel.find({});
 
     return res.json(data);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    handleErrors.handleHttpError(res, error.message, "500");
   }
 };
 
-const getItem = async (req, res) => {};
+const getItem = async (req, res) => {
+  try {
+  } catch (error) {
+    handleErrors.handleHttpError(res, error.message, "500");
+  }
+};
+
 const createItem = async (req, res) => {
   try {
     const { file } = req;
@@ -24,11 +32,23 @@ const createItem = async (req, res) => {
 
     return res.json(data);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    handleErrors.handleHttpError(res, error.message, "500");
   }
 };
-const updateItem = async (req, res) => {};
-const deleteItem = async (req, res) => {};
+
+const updateItem = async (req, res) => {
+  try {
+  } catch (error) {
+    handleErrors.handleHttpError(res, error.message, "500");
+  }
+};
+
+const deleteItem = async (req, res) => {
+  try {
+  } catch (error) {
+    handleErrors.handleHttpError(res, error.message, "500");
+  }
+};
 
 module.exports = {
   getItem,
