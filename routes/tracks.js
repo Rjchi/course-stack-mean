@@ -6,9 +6,14 @@ const router = express.Router();
 
 router
   .get("/", controller.getItems)
-  .get("/:id", controller.getItem)
+  .get("/:id", validators.validatorGetItem, controller.getItem)
   .post("/", validators.validatorCreateItem, controller.createItem)
-  .put("/:id", controller.updateItem)
-  .delete("/:id", controller.deleteItem);
+  .put(
+    "/:id",
+    validators.validatorGetItem,
+    validators.validatorCreateItem,
+    controller.updateItem
+  )
+  .delete("/:id", validators.validatorGetItem, controller.deleteItem);
 
 module.exports = router;
