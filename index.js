@@ -9,6 +9,10 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+/**-----------------------------------------------------------
+ * | Indicamos de donde quiero tomar los archivos estaticos
+ * -----------------------------------------------------------*/
+app.use(express.static(`storage`));
 
 /**--------------------------------------------------------
  * | Routes (en este caso traemos el routes/index.js)
