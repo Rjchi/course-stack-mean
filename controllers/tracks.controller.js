@@ -60,7 +60,10 @@ const deleteItem = async (req, res) => {
     req = matchedData(req);
     const { id } = req;
 
-    const data = await tracksModel.findByIdAndDelete(id);
+    /**---------------------------------------------
+     * | Aqui estamos haciendo uso del soft delete
+     * ---------------------------------------------*/
+    const data = await tracksModel.delete({ _id: id });
 
     return res.json(data);
   } catch (error) {
