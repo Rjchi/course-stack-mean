@@ -16,8 +16,12 @@ const UserScheme = new mongoose.Schema(
       type: String,
       unique: true,
     },
+    /**-----------------------------------------------------------------------
+     * | Con 'select: false' eliminamos la contraseña al consultar un usuario
+     * -----------------------------------------------------------------------*/
     password: {
       type: String,
+      select: false,
     },
     role: {
       type: ["user", "admin"],
