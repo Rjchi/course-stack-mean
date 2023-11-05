@@ -1,20 +1,33 @@
 const express = require("express");
-const session = require("../middlewares/session");
 const validators = require("../validators/tracks");
+const rolMiddleware = require("../middlewares/role");
+const authMiddleware = require("../middlewares/session");
 const controller = require("../controllers/tracks.controller");
 
 const router = express.Router();
 
 router
-  .get("/", session, controller.getItems)
-  .get("/:id", validators.validatorGetItem, controller.getItem)
-  .post("/", validators.validatorCreateItem, controller.createItem)
+  .get("/", authMiddleware, controller.getItems)
+  .get("/:id", authMiddleware, validators.validatorGetItem, controller.getItem)
+  .post(
+    "/",
+    authMiddleware,
+    rolMiddleware(["admin"]),
+    validators.validatorCreateItem,
+    controller.createItem
+  )
   .put(
     "/:id",
+    authMiddleware,
     validators.validatorGetItem,
     validators.validatorCreateItem,
     controller.updateItem
   )
-  .delete("/:id", validators.validatorGetItem, controller.deleteItem);
+  .delete(
+    "/:id",
+    authMiddleware,
+    validators.validatorGetItem,
+    controller.deleteItem
+  );
 
 module.exports = router;
