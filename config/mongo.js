@@ -9,9 +9,9 @@ const dbConnect = async () => {
 
   await mongoose
     .connect(DB_URI)
-    .then(() => console.log("****Conexión Establecida****"))
+    .then(() => console.log("****Conexión Establecida NOSQL****"))
     .catch((error) =>
-      console.log("****Conexión No Establecida****", error.message)
+      console.log("****Conexión No Establecida NOSQL****", error.message)
     );
 };
 
