@@ -9,7 +9,10 @@ const handleErrors = require("../utils/handleError");
 
 const getItems = async (req, res) => {
   try {
-    const data = await tracksModel.find({});
+    /**---------------------------------------------------------------
+     * | Utilizamos el metodo que creamos en el modelo(sql/nosql)
+     * ---------------------------------------------------------------*/
+    const data = await tracksModel.findAllData({});
     return res.json(data);
   } catch (error) {
     handleErrors.handleHttpError(res, error.message, "500");
@@ -21,7 +24,10 @@ const getItem = async (req, res) => {
     req = matchedData(req);
     const { id } = req;
 
-    const data = await tracksModel.findById(id);
+    /**---------------------------------------------------------------
+     * | Utilizamos el metodo que creamos en el modelo(sql/nosql)
+     * ---------------------------------------------------------------*/
+    const data = await tracksModel.findOneData(id);
 
     return res.json(data);
   } catch (error) {
