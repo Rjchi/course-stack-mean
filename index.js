@@ -2,10 +2,14 @@ require("dotenv").config();
 
 const cors = require("cors");
 const express = require("express");
-const dbConnect = require("./config/mongo");
+
+const dbConnectNoSql = require("./config/mongo");
+const { dbConnectMySql } = require("./config/mysql");
 
 const PORT = process.env.PORT || 5001;
 const app = express();
+
+const ENGINE_DB = process.env.ENGINE_DB;
 
 app.use(cors());
 app.use(express.json());
@@ -21,6 +25,12 @@ app.use("/api", require("./routes"));
 
 app.listen(PORT, () => console.log(`Server on port: ${PORT}`));
 
-(async () => {
-  await dbConnect();
-})();
+if (ENGINE_DB === "nosql") {
+  (async () => {
+    await dbConnectNoSql();
+  })();
+} else {
+  (async () => {
+    await dbConnectMySql();
+  })();
+}
