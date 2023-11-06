@@ -60,6 +60,55 @@ const TracksScheme = new mongoose.Schema(
   }
 );
 
+/**----------------------------------------------------
+ * | Implementar metodo propio con relacion a storage
+ * | 'findAllData' puede ser el nombre que queramos
+ * ----------------------------------------------------*/
+TracksScheme.statics.findAllData = function () {
+  /**----------------------------------------------
+   * | En sql su equivalente seria un join
+   * ----------------------------------------------*/
+  const joinData = this.aggregate([
+    {
+      $lookup: {
+        from: "storages", // relación de tracks con ---> storages
+        localField: "mediaId", // campo a relacionar tracks.mediaId con:
+        foreignField: "_id", // storages._id
+        as: "audio", // y el resultado va a tener un alias
+      },
+    },
+    {
+      $unwind: "$audio", // cambiamos el arreglo de objetos de la respuesta por solo un objeto
+    },
+  ]);
+  return joinData;
+};
+
+TracksScheme.statics.findOneData = function (id) {
+  const joinData = this.aggregate([
+    /**---------------------------------------------------------------------------------
+     * | Cada uno se estos objetos con su configuración se denominan stitch(esteich)
+     * ---------------------------------------------------------------------------------*/
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(id), // este es de tracks._id
+      },
+    },
+    {
+      $lookup: {
+        from: "storages",
+        localField: "mediaId",
+        foreignField: "_id",
+        as: "audio",
+      },
+    },
+    {
+      $unwind: "$audio",
+    },
+  ]);
+  return joinData;
+};
+
 /**------------------------------------------------------------------
  * | Le decimos a nuestro esquema que utilice el plugin
  * | y que sobrescriba los metodos nativos con los del soft delete

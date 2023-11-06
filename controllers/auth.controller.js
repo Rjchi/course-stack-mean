@@ -39,7 +39,7 @@ const login = async (req, res) => {
      * --------------------------------------------------------------------*/
     const user = await usersModel
       .findOne({ email: req.email })
-      // .select("password name role email");
+      .select("password name role email");
 
     if (!user) return handleErrors.handleHttpError(res, "USER_NOT_EXIST", 404);
 
