@@ -1,6 +1,9 @@
 const { usersModel } = require("../models");
 const handleJwt = require("../utils/handleJwt");
 const handleErrors = require("../utils/handleError");
+const getProperties = require("../utils/handlePropertiesEngine");
+
+const propertiesKey = getProperties();
 
 const authMiddleware = async (req, res, next) => {
   try {
@@ -10,13 +13,17 @@ const authMiddleware = async (req, res, next) => {
     const token = req.headers.authorization.split(" ").pop();
     const dataToken = await handleJwt.verifyToken(token);
 
-    /**------------------------------------------------------------------------
-     * | Verificamos que exista el id que agregamos al crear el token JWT
-     * ------------------------------------------------------------------------*/
-    if (!dataToken._id)
-      return handleErrors.handleHttpError(res, "ERROR_ID_TOKEN", 401);
+    /**------------------------------------------
+     * | Validamos que si exista el 'dataToken'
+     * ------------------------------------------*/
+    if (!dataToken)
+      return handleErrors.handleHttpError(res, "NOT_PAYLOAD_DATA", 401);
 
-    const user = await usersModel.findById(dataToken._id);
+    const query = {
+      [propertiesKey.id]: dataToken[propertiesKey.id], // _id o id (Dinamicamente)
+    };
+
+    const user = await usersModel.findOne(query);
     req.user = user;
 
     /**-----------------------------------------------
